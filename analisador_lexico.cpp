@@ -148,7 +148,7 @@ int main() {
     bool temDesconhecido = false;
     for (const auto& token : tokens) {
         if (token.tipo == TipoDeToken::Desconhecido) {
-            cout << "Erro léxico: \"" << token.texto << "\" não reconhecido.";
+            cout << "Erro lÃ©xico: \"" << token.texto << "\" nÃ£o reconhecido.";
             return 0;
         }
     }
