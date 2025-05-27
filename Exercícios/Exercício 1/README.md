@@ -64,6 +64,11 @@ Erro léxico: ";" não reconhecido.
 ```
 ---
 
+## Compilação
+```
+g++ analisador_lexico.cpp -o analisador_lexico
+```
+
 ## Licença
 
 Este projeto é apenas para fins educacionais no contexto da disciplina de Compiladores.
