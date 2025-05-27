@@ -1,74 +1,101 @@
-# Analisador Léxico para a Linguagem C
 
-## Descrição
+# Trabalho de Compiladores - 2025/1
 
-Este projeto consiste na implementação de um **analisador léxico** para a linguagem C, desenvolvido manualmente em **C ou C++**. O programa recebe como entrada um código fonte em C e gera como saída a **lista de tokens reconhecidos**.
+## Objetivo
+
+Desenvolver um compilador para uma **linguagem de programação inventada**, que seja capaz de traduzir programas escritos nessa linguagem para o assembly da máquina **Raposeitor**.
 
 ---
 
-## Exemplo de Entrada
+## Requisitos da Linguagem Inventada
 
-```c
-int main ( ) {
-    int variavel = -42 ;
-    char mander ;
-    for ( int i = 0 ; i < n ; i ++ ) {
-        if ( i % 2 == variavel + 30 )
-            mander = ’f’ ;
-        else
-            mander = ’X’ ;
-    }
+A linguagem que você inventar **deve permitir**:
+
+- Declaração e manipulação de variáveis inteiras;
+- Declaração e manipulação de vetores estáticos de inteiros;
+- Leitura de valores do usuário;
+- Impressão de valores e strings para o usuário;
+- Escrita de seleções completas (`if/else`);
+- Escrita de seleções parciais (`if`);
+- Escrita de laços com condição (`while`);
+- Escrita de laços de repetição simplificados (`for`);
+- Aninhamento de laços e seleções;
+- Escrita e uso de:
+  - Expressões aritméticas: `+`, `-`, `*`, `/` (inteira), `%`
+  - Expressões de comparação: `>`, `<`, `>=`, `<=`, `==`, `!=`
+  - Expressões lógicas: `!`, `&&`, `||`
+  - Uso de parênteses
+- Comentários de linha (`//`)
+
+**Não é necessário** implementar:
+- Variáveis de tipos não inteiros;
+- Matrizes, structs ou outras estruturas de dados complexas;
+- Ponteiros;
+- Funções;
+- Manipulação de arquivos.
+
+---
+
+## Exemplo
+
+### Código na linguagem inventada
+
+```plaintext
+var a: inteiro;
+var b: inteiro;
+var maior: inteiro; // declaração
+
+leia(a);
+leia(b);
+se a > b entao {
+  maior <- a;
+} senao {
+  maior <- b;
 }
+
+print("O maior eh ", maior, "\n");
+```
+
+### Possível variação em outra linguagem inventada
+
+```plaintext
+DECLARA a AI
+DECLARA b AI
+DECLARA maior AI // declaração
+
+MEDAH a AI
+MEDAH b AI
+SERAQUE a EHMAIORQUE b ? SEFOR (
+  maior RECEBA a AI
+) SEINAO (
+  maior RECEBA b AI
+)
+
+MOSTRA "O maior eh" DEPOIS maior DEPOIS "\n" AI
 ```
 
 ---
 
-## Exemplo de Saída
+## Raposeitor
 
-```text
-<INT> <ID, "main"> <LPAR> <RPAR> <LCHAVES>
-<INT> <ID, "variavel"> <ATRIB> <NUM, "-42">
-<PEV> <CHAR> <ID, "mander"> <PEV> <FOR>
-<LPAR> <INT> <ID, "i"> <ATRIB> <NUM, "0">
-<PEV> <ID, "i"> <RCHAVES> <ID, "n"> <PEV>
-<ID, "i"> <MAISMAIS> <RPAR> <LCHAVES> <IF>
-<LPAR> <ID, "i"> <MOD> <NUM, "2"> <IGUAL>
-<ID, "variavel"> <MAIS> <NUM, "30"> <RPAR>
-<ID, "mander"> <ATRIB> <LETRA, "’f’"> <PEV>
-<ELSE> <ID, "mander"> <ATRIB> <LETRA, "’X’">
-<PEV> <RCHAVES> <RCHAVES>
-```
+Seu compilador deverá gerar código em **assembly do Raposeitor**, uma máquina com instruções de três endereços. A documentação da máquina está disponível no Moodle e inclui:
+
+- Interpretadores: `raposeitor.cpp`, `raposeitor.py`
+- Exemplos: códigos em Rapolang e seus equivalentes em assembly
+
+> ⚠️ **Atenção**: não implemente um compilador para a linguagem Rapolang! Você deve criar a sua própria linguagem.
 
 ---
 
-## Regras e Requisitos
+## Implementação
 
-- O analisador deve ser implementado manualmente utilizando `if-else`, `switch-case` ou autômato finito determinístico (DFA).
-- **Não utilizar ferramentas geradoras como `flex`**.
-- Os seguintes tipos de tokens devem ser reconhecidos (entre outros): `INT`, `ID`, `NUM`, `CHAR`, `FOR`, `IF`, `ELSE`, `LETRA`, `ATRIB`, `MOD`, `MAIS`, `IGUAL`, `MAISMAIS`, `PEV`, `LPAR`, `RPAR`, `LCHAVES`, `RCHAVES`.
-- Para os tokens com valor literal relevante (`ID`, `NUM`, `LETRA`), o texto original deve ser impresso junto.
-- Utilize `enum` para definir os tipos de token, mas imprima seus nomes (e.g., `ID`, `NUM`, ...) em vez do valor numérico.
-- Considere que os tokens na entrada são separados por espaços.
-- O programa deve identificar **erros léxicos**, como caracteres inválidos.
+- O compilador deve ser implementado em **C ou C++**;
+- Pode-se usar qualquer técnica de parser (manual, `flex/bison`, etc.);
+- É permitido restringir aspectos da linguagem para facilitar a implementação (ex: exigir delimitadores `{}` mesmo para blocos de uma linha);
+- O compilador **deve identificar e apontar erros**:
+  - Léxicos
+  - Sintáticos
+  - Semânticos
+- O código assembly **não precisa ser otimizado**, apenas correto e funcional com os interpretadores fornecidos.
 
-### Exemplo de erro léxico:
-
-Entrada:
-```c
-// Contém caractere inválido como o ponto de interrogação grego
-```
-
-Saída:
-```text
-Erro léxico: ";" não reconhecido.
-```
 ---
-
-## Compilação
-```
-g++ analisador_lexico.cpp -o analisador_lexico
-```
-
-## Licença
-
-Este projeto é apenas para fins educacionais no contexto da disciplina de Compiladores.
