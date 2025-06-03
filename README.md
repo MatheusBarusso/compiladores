@@ -8,4 +8,3 @@
 
 ### Enunciados e instruções nos diretórios
 
-#### Trabalhos e projetos realizados em dupla com @Reinaldo-Kn
