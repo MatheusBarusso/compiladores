@@ -7,3 +7,5 @@
  - Projeto da Disciplina -> Criação de linguagem de programação e de um compilador para a linguagem
 
 ### Enunciados e instruções nos diretórios
+
+#### Trabalhos e projetos realizados em dupla com @Reinaldo-Kn
