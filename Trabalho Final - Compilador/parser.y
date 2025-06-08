@@ -16,6 +16,8 @@ int yyerror(const char *s);
 %token PLUS MINUS TIMES DIVIDE ASSIGN LE GE EQ NE
 %token <num> NUMBER
 %token <id> IDENTIFIER
+%token STRING_TYPE
+%token <id> STRING_LITERAL
 
 %left LE GE EQ NE '<' '>'
 %left PLUS MINUS
@@ -56,8 +58,13 @@ argument_list:
 
 statement:
     INT IDENTIFIER ';'
+  | INT IDENTIFIER '[' NUMBER ']' ';'
+  | INT IDENTIFIER '[' NUMBER ']' ASSIGN '{' expression_list '}' ';'
+  | STRING_TYPE IDENTIFIER ';'
+  | STRING_TYPE IDENTIFIER ASSIGN STRING_LITERAL ';'
   | IDENTIFIER ASSIGN expression ';'
   | IDENTIFIER '(' ')' ';'
+  | IDENTIFIER '[' expression ']' ASSIGN expression ';'
   | IDENTIFIER '(' argument_list ')' ';'
   | IF '(' expression ')' block
   | IF '(' expression ')' block ELSE block
@@ -66,6 +73,11 @@ statement:
   | PRINT '(' argument_list ')' ';'
   | READ '(' argument_list ')' ';'
   | RETURN expression ';'
+    ;
+
+expression_list:
+      expression
+    | expression_list ',' expression
     ;
 
 expression:
@@ -80,8 +92,10 @@ expression:
   | expression '<' expression
   | expression '>' expression
   | '(' expression ')'
+  | IDENTIFIER '[' expression ']'
   | NUMBER
   | IDENTIFIER
+  | STRING_LITERAL
     ;
 
 %%

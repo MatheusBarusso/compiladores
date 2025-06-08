@@ -1,7 +1,7 @@
 # Makefile
 
 # Alvo principal
-all: compilador
+all: analisador
 
 # Gera parser.tab.c e parser.tab.h a partir de parser.y
 parser.tab.c parser.tab.h: parser.y
@@ -12,8 +12,8 @@ lex.yy.c: lexer.l parser.tab.h
 	flex lexer.l
 
 # Compila tudo
-compilador: parser.tab.c lex.yy.c main.cpp
-	g++ -o compilador main.cpp parser.tab.c lex.yy.c
+analisador: parser.tab.c lex.yy.c main.cpp
+	g++ -o analisador main.cpp parser.tab.c lex.yy.c
 
 clean:
-	rm -f compilador parser.tab.* lex.yy.c
+	rm -f analisador parser.tab.* lex.yy.c

@@ -1,0 +1,6 @@
+niam() {
+    tni vetor[2] = {1, 4};
+    fi (vetor[0] < vetor[1]) {
+        tnirp(vetor[0]);
+    }
+}
