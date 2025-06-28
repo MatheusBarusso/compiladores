@@ -1,0 +1,11 @@
+tni a;
+tni b;
+tni maior;
+daer(a);
+daer(b);
+fi(a > b) {
+    maior = a;
+} esle {
+    maior = b;
+}
+tnirp("O maior eh ", maior, "\n");

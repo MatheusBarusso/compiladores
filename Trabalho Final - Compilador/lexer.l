@@ -1,7 +1,8 @@
 %option noyywrap
 %{
-#include "parser.tab.h"
 #include <stdlib.h>
+#include <string.h>
+#include "parser.tab.h"
 %}
 
 DIGIT       [0-9]

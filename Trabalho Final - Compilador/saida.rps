@@ -1,0 +1,12 @@
+DECLARA a AI
+DECLARA b AI
+DECLARA maior AI
+MEDAH a AI
+MEDAH b AI
+_t1 RECEBA a EHMAIORQUE b AI
+maior RECEBA a AI
+maior RECEBA b AI
+SERAQUE _t1 ? SEFOR (
+) SEINAO (
+)
+MOSTRA "O maior eh " DEPOIS maior DEPOIS "\n" AI
