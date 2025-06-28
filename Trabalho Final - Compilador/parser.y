@@ -14,14 +14,18 @@ int yyerror(const char *s);
 
 %token IF ELSE WHILE FOR INT PRINT READ RETURN MAIN
 %token PLUS MINUS TIMES DIVIDE ASSIGN LE GE EQ NE
+%token MOD AND OR NOT
 %token <num> NUMBER
 %token <id> IDENTIFIER
 %token STRING_TYPE
 %token <id> STRING_LITERAL
 
-%left LE GE EQ NE '<' '>'
+%right NOT
+%left TIMES DIVIDE MOD
 %left PLUS MINUS
-%left TIMES DIVIDE
+%left LE GE EQ NE '<' '>'
+%left AND
+%left OR
 
 %%
 
@@ -85,12 +89,16 @@ expression:
   | expression MINUS expression
   | expression TIMES expression
   | expression DIVIDE expression
+  | expression MOD expression
   | expression LE expression
   | expression GE expression
   | expression EQ expression
   | expression NE expression
   | expression '<' expression
   | expression '>' expression
+  | expression AND expression
+  | expression OR expression
+  | NOT expression
   | '(' expression ')'
   | IDENTIFIER '[' expression ']'
   | NUMBER

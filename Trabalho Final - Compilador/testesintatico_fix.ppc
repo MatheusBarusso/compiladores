@@ -3,4 +3,5 @@ niam() {
     fi (vetor[0] < vetor[1]) {
         tnirp(vetor[0]);
     }
+// teste comentario
 }

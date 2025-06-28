@@ -72,10 +72,14 @@ extern int yydebug;
     GE = 273,                      /* GE  */
     EQ = 274,                      /* EQ  */
     NE = 275,                      /* NE  */
-    NUMBER = 276,                  /* NUMBER  */
-    IDENTIFIER = 277,              /* IDENTIFIER  */
-    STRING_TYPE = 278,             /* STRING_TYPE  */
-    STRING_LITERAL = 279           /* STRING_LITERAL  */
+    MOD = 276,                     /* MOD  */
+    AND = 277,                     /* AND  */
+    OR = 278,                      /* OR  */
+    NOT = 279,                     /* NOT  */
+    NUMBER = 280,                  /* NUMBER  */
+    IDENTIFIER = 281,              /* IDENTIFIER  */
+    STRING_TYPE = 282,             /* STRING_TYPE  */
+    STRING_LITERAL = 283           /* STRING_LITERAL  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -89,7 +93,7 @@ union YYSTYPE
     int num;
     char *id;
 
-#line 93 "parser.tab.h"
+#line 97 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

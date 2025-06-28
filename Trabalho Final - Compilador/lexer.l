@@ -24,6 +24,7 @@ ID          [a-zA-Z_][a-zA-Z0-9_]*
 "+"             return MINUS;
 "*"             return TIMES;
 "/"             return DIVIDE;
+"%"             return MOD;
 
 "="             return ASSIGN;
 "<="            return LE;
@@ -32,6 +33,9 @@ ID          [a-zA-Z_][a-zA-Z0-9_]*
 "!="            return NE;
 "<"             return '<';
 ">"             return '>';
+"&&"            return AND;
+"||"            return OR;
+"!"             return NOT;
 
 
 "("             return '(';
