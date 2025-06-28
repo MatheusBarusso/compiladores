@@ -86,7 +86,8 @@ extern int yydebug;
     NUMBER = 280,                  /* NUMBER  */
     IDENTIFIER = 281,              /* IDENTIFIER  */
     STRING_TYPE = 282,             /* STRING_TYPE  */
-    STRING_LITERAL = 283           /* STRING_LITERAL  */
+    STRING_LITERAL = 283,          /* STRING_LITERAL  */
+    LOWER_THAN_ELSE = 284          /* LOWER_THAN_ELSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -102,7 +103,7 @@ union YYSTYPE
     std::string *str;
     std::vector<std::string> *strlist;
 
-#line 106 "parser.tab.h"
+#line 107 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

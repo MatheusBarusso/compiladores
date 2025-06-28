@@ -1,11 +1,18 @@
-tni a;
-tni b;
-tni maior;
-daer(a);
-daer(b);
-fi(a > b) {
-    maior = a;
-} esle {
-    maior = b;
+niam() {
+  tni a;
+  tni b;
+  tni c;
+  daer(a);
+  daer(b);
+  daer(c);
+  tni m;
+  fi(a > b) {
+    m = a;
+  } esle {
+    m = b;
+  }
+  fi(c > m) {
+    m = c;
+  }
+  tnirp("O maior eh ", m, "\n");
 }
-tnirp("O maior eh ", maior, "\n");

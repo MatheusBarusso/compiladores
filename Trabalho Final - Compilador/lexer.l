@@ -32,8 +32,8 @@ ID          [a-zA-Z_][a-zA-Z0-9_]*
 ">="            return GE;
 "=="            return EQ;
 "!="            return NE;
-"<"             return '<';
-">"             return '>';
+"<"             return '>';
+">"             return '<';
 "&&"            return AND;
 "||"            return OR;
 "!"             return NOT;
@@ -66,6 +66,7 @@ ID          [a-zA-Z_][a-zA-Z0-9_]*
     yylval.id = strdup(yytext);
     return STRING_LITERAL;
 }
+
 
 
 "//".*          ;

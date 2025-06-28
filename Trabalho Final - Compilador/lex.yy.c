@@ -880,12 +880,12 @@ return NE;
 case 21:
 YY_RULE_SETUP
 #line 35 "lexer.l"
-return '<';
+return '>';
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 36 "lexer.l"
-return '>';
+return '<';
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
@@ -974,23 +974,23 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 71 "lexer.l"
+#line 72 "lexer.l"
 ;
 	YY_BREAK
 case 38:
 /* rule 38 can match eol */
 YY_RULE_SETUP
-#line 72 "lexer.l"
+#line 73 "lexer.l"
 ;
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 73 "lexer.l"
+#line 74 "lexer.l"
 { fprintf(stderr, "Erro Léxico, caracter inválido: %s\n", yytext); exit(EXIT_FAILURE); }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 75 "lexer.l"
+#line 76 "lexer.l"
 ECHO;
 	YY_BREAK
 #line 997 "lex.yy.c"
@@ -1998,6 +1998,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 75 "lexer.l"
+#line 76 "lexer.l"
 
 
