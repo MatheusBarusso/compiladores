@@ -1,12 +1,12 @@
-DECLARA a AI
-DECLARA b AI
-DECLARA maior AI
-MEDAH a AI
-MEDAH b AI
-_t1 RECEBA a EHMAIORQUE b AI
-maior RECEBA a AI
-maior RECEBA b AI
-SERAQUE _t1 ? SEFOR (
-) SEINAO (
-)
-MOSTRA "O maior eh " DEPOIS maior DEPOIS "\n" AI
+read %r0 0 0
+read %r1 0 0
+greater %t1 a b
+mov %r2 a 0
+mov %r2 b 0
+jf %t1 L1 0
+jump L2 0 0
+label L1 0 0
+label L2 0 0
+printf "O maior eh " 0 0
+printf maior 0 0
+printf "\n" 0 0

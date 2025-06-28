@@ -1,27 +1,28 @@
+%code requires {
+#include <string>
+#include <vector>
+}
+
 %{
 #include <cstdio>
 #include <cstdarg>
 #include <map>
-#include <string>
-#include <vector>
+#include "parser.tab.h"
 
 extern FILE *out;
 extern std::string newTemp();
-extern void emit(const char *fmt, ...);
-
-struct InfoVar { bool isArray; int size; };
-extern std::map<std::string,InfoVar> symtable;
-extern std::string exprResult(const std::string&, int, const std::string&);
-extern std::string condText(const std::string&);
-
-int yylex(void);
-int yyerror(const char *s);
+extern std::string newLabel();
+extern std::string regOf(const std::string &);
+extern void declareVar(const std::string &);
+extern void declareArray(const std::string &, int);
+extern void emit(const char *, ...);
+extern std::string exprResult(const std::string &, int, const std::string &);
+extern std::string condText(const std::string &);
+extern FILE *yyin;
+extern int yylex();
+extern int yyparse();
+int yyerror(const char *);
 %}
-
-%code requires {
-  #include <string>
-  #include <vector>
-}
 
 %union {
     int num;
@@ -31,8 +32,7 @@ int yyerror(const char *s);
 }
 
 %token IF ELSE WHILE FOR INT PRINT READ RETURN MAIN
-%token PLUS MINUS TIMES DIVIDE ASSIGN LE GE EQ NE
-%token MOD AND OR NOT
+%token PLUS MINUS TIMES DIVIDE ASSIGN LE GE EQ NE MOD AND OR NOT
 %token <num> NUMBER
 %token <id> IDENTIFIER
 %token STRING_TYPE
@@ -51,30 +51,34 @@ int yyerror(const char *s);
 %%
 
 program:
-    | program external_decl
-    ;
+  | program external_decl
+  ;
 
 external_decl:
     MAIN '(' ')' block
   | IDENTIFIER '(' ')' block
   | statement
-    ;
+  ;
 
 block:
     '{' statement_list '}'
-    ;
+  ;
 
 statement_list:
-    | statement_list statement
-    ;
+  | statement_list statement
+  ;
 
 for_init:
-    | IDENTIFIER ASSIGN expression
-    ;
+  | IDENTIFIER ASSIGN expression {
+      emit("mov %s %s 0", regOf($1).c_str(), (*$3).c_str());
+  }
+  ;
 
 for_update:
-    | IDENTIFIER ASSIGN expression
-    ;
+  | IDENTIFIER ASSIGN expression {
+      emit("mov %s %s 0", regOf($1).c_str(), (*$3).c_str());
+  }
+  ;
 
 argument_list:
       expression {
@@ -85,106 +89,6 @@ argument_list:
           $1->push_back(*$3);
           $$ = $1;
       }
-    ;
-
-statement:
-    INT IDENTIFIER ';' {
-        std::string var = $2;
-        if (symtable.count(var)) yyerror("Declaracao duplicada");
-        symtable[var] = {false, 0};
-        emit("DECLARA %s AI", var.c_str());
-    }
-  | INT IDENTIFIER '[' NUMBER ']' ';' {
-        std::string var = $2;
-        int N = $4;
-        if (symtable.count(var)) yyerror("Declaracao duplicada");
-        symtable[var] = {true, N};
-        for (int i = 0; i < N; ++i)
-            emit("DECLARA %s[%d] AI", var.c_str(), i);
-    }
-  | INT IDENTIFIER '[' NUMBER ']' ASSIGN '{' expression_list '}' ';' {
-        std::string var = $2;
-        int N = $4;
-        auto elems = $8;          
-        if (symtable.count(var)) yyerror("Declaracao duplicada");
-        symtable[var] = {true, N};
-        int idx = 0;
-        for (auto &e : *elems) {
-          emit("%s[%d] RECEBA %s AI", var.c_str(), idx++, e.c_str());
-        }
-    }
-  | STRING_TYPE IDENTIFIER ';' {
-        std::string var = $2;
-        if (symtable.count(var)) yyerror("Declaracao duplicada");
-        symtable[var] = {false, 0};
-    }
-  | STRING_TYPE IDENTIFIER ASSIGN STRING_LITERAL ';' {
-        std::string var = $2;
-        std::string lit = $4;
-        if (symtable.count(var)) yyerror("Declaracao duplicada");
-        symtable[var] = {false, 0};
-        emit("DCLSTR %s %s", var.c_str(), lit.c_str());
-    }
-  | IDENTIFIER ASSIGN expression ';' {
-        std::string dest = $1;
-        std::string src  = *$3;
-        emit("%s RECEBA %s AI", dest.c_str(), src.c_str());
-    }
-  | IDENTIFIER '(' ')' ';' {
-        emit("CHAMA %s", $1);
-    }
-  | IDENTIFIER '[' expression ']' ASSIGN expression ';' {
-        std::string var = $1;
-        std::string idx = *$3;
-        std::string val = *$6;
-        emit("%s[%s] RECEBA %s AI", var.c_str(), idx.c_str(), val.c_str());
-    }
-  | IDENTIFIER '(' argument_list ')' ';' {
-        auto args = $3;          /* vector<Node*>* */
-        for (size_t i = 0; i < args->size(); ++i) {
-          emit("PUSH %s", (*args)[i].c_str());
-        }
-        emit("CHAMA %s", $1);
-        emit("LIMPAARGS");
-    }
-  | IF '(' expression ')' block {
-        std::string cond = condText(*$3);
-        emit("SERAQUE %s ? SEFOR (", cond.c_str());
-        emit(")");
-    }
-  | IF '(' expression ')' block ELSE block {
-        std::string cond = condText(*$3);
-        emit("SERAQUE %s ? SEFOR (", cond.c_str());
-        emit(") SEINAO (");
-        emit(")");
-    }
-  | FOR '(' for_init ';' expression ';' for_update ')' block {
-      std::string cond = condText(*$5); 
-      emit("ENQUANTO %s ? FACA (", cond.c_str());
-      emit(")");
-  }
-  | WHILE '(' expression ')' block {
-        std::string cond = condText(*$3);
-        emit("ENQUANTO %s ? FACA (", cond.c_str());
-        emit(")");
-    }
-  | PRINT '(' argument_list ')' ';' {
-        std::string seq;
-        for (size_t i = 0; i < $3->size(); ++i) {
-            if (i > 0) seq += " DEPOIS ";
-            seq += (*$3)[i];
-        }
-        emit("MOSTRA %s AI", seq.c_str());
-    }
-  | READ '(' argument_list ')' ';' {
-        for (size_t i = 0; i < $3->size(); ++i) {
-            emit("MEDAH %s AI", (*$3)[i].c_str());
-        }
-    }
-  | RETURN expression ';' {
-        std::string ret = *$2;
-        emit("RETORNA %s AI", ret.c_str());
-    }
   ;
 
 expression_list:
@@ -196,7 +100,98 @@ expression_list:
           $1->push_back(*$3);
           $$ = $1;
       }
-    ;
+  ;
+
+statement:
+    INT IDENTIFIER ';' {
+        declareVar($2);
+    }
+  | INT IDENTIFIER '[' NUMBER ']' ';' {
+        declareArray($2, $4);
+    }
+  | INT IDENTIFIER '[' NUMBER ']' ASSIGN '{' expression_list '}' ';' {
+        declareArray($2, $4);
+        int idx = 0;
+        for (auto &e : *$8) {
+            std::string name = std::string($2) + "[" + std::to_string(idx) + "]";
+            emit("mov %s %s 0", regOf(name).c_str(), e.c_str());
+            idx++;
+        }
+    }
+  | STRING_TYPE IDENTIFIER ';' {
+        declareVar($2);
+    }
+  | STRING_TYPE IDENTIFIER ASSIGN STRING_LITERAL ';' {
+        declareVar($2);
+        emit("printf %s 0 0", $4);
+    }
+  | IDENTIFIER ASSIGN expression ';' {
+        emit("mov %s %s 0", regOf($1).c_str(), (*$3).c_str());
+    }
+  | IDENTIFIER '(' ')' ';' {
+        emit("call %s 0 0", $1);
+    }
+  | IDENTIFIER '[' expression ']' ASSIGN expression ';' {
+        std::string idx = *$3;
+        std::string name = std::string($1) + "[" + idx + "]";
+        emit("mov %s %s 0", regOf(name).c_str(), (*$6).c_str());
+    }
+  | IDENTIFIER '(' argument_list ')' ';' {
+        for (auto &a : *$3) {
+            emit("push %s 0 0", a.c_str());
+        }
+        emit("call %s 0 0", $1);
+        emit("popargs 0 0 0");
+    }
+  | IF '(' expression ')' block {
+        std::string cond = *$3;
+        std::string Lelse = newLabel();
+        std::string Lend  = newLabel();
+        emit("jf %s %s 0", cond.c_str(), Lelse.c_str());
+        emit("jump %s 0 0", Lend.c_str());
+        emit("label %s 0 0", Lelse.c_str());
+        emit("label %s 0 0", Lend.c_str());
+    }
+  | IF '(' expression ')' block ELSE block {
+        std::string cond = *$3;
+        std::string Lelse = newLabel();
+        std::string Lend  = newLabel();
+        emit("jf %s %s 0", cond.c_str(), Lelse.c_str());
+        emit("jump %s 0 0", Lend.c_str());
+        emit("label %s 0 0", Lelse.c_str());
+        emit("label %s 0 0", Lend.c_str());
+    }
+  | FOR '(' for_init ';' expression ';' for_update ')' block {
+        std::string Lstart = newLabel();
+        std::string Lend   = newLabel();
+        std::string cond   = *$5;
+        emit("label %s 0 0", Lstart.c_str());
+        emit("jf %s %s 0", cond.c_str(), Lend.c_str());
+        emit("jump %s 0 0", Lstart.c_str());
+        emit("label %s 0 0", Lend.c_str());
+    }
+  | WHILE '(' expression ')' block {
+        std::string Lstart = newLabel();
+        std::string Lend   = newLabel();
+        std::string cond   = *$3;
+        emit("label %s 0 0", Lstart.c_str());
+        emit("jf %s %s 0", cond.c_str(), Lend.c_str());
+        emit("jump %s 0 0", Lstart.c_str());
+        emit("label %s 0 0", Lend.c_str());
+    }
+  | PRINT '(' argument_list ')' ';' {
+        for (auto &e : *$3) {
+            emit("printf %s 0 0", e.c_str());
+        }
+    }
+  | READ '(' IDENTIFIER ')' ';' {
+        emit("read %s 0 0", regOf($3).c_str());
+    }
+  | RETURN expression ';' {
+        std::string r = *$2;
+        emit("mov %ret %s 0", r.c_str());
+    }
+  ;
 
 expression:
     NUMBER {
@@ -211,67 +206,81 @@ expression:
   | '(' expression ')' {
         $$ = $2;
     }
-  | expression PLUS  expression {
-        std::string tmp = exprResult(*$1, PLUS,  *$3);
+  | expression PLUS expression {
+        std::string tmp = newTemp();
+        emit("add %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
   | expression MINUS expression {
-        std::string tmp = exprResult(*$1, MINUS, *$3);
+        std::string tmp = newTemp();
+        emit("sub %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
   | expression TIMES expression {
-        std::string tmp = exprResult(*$1, TIMES, *$3);
+        std::string tmp = newTemp();
+        emit("mult %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
   | expression DIVIDE expression {
-        std::string tmp = exprResult(*$1, DIVIDE, *$3);
+        std::string tmp = newTemp();
+        emit("div %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
-  | expression MOD    expression {
-        std::string tmp = exprResult(*$1, MOD, *$3);
+  | expression MOD expression {
+        std::string tmp = newTemp();
+        emit("mod %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
-  | expression LE     expression {
-        std::string tmp = exprResult(*$1, LE, *$3);
+  | expression '<' expression {
+        std::string tmp = newTemp();
+        emit("less %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
-  | expression GE     expression {
-        std::string tmp = exprResult(*$1, GE, *$3);
+  | expression '>' expression {
+        std::string tmp = newTemp();
+        emit("greater %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
-  | expression EQ     expression {
-        std::string tmp = exprResult(*$1, EQ, *$3);
+  | expression LE expression {
+        std::string tmp = newTemp();
+        emit("lesseq %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
-  | expression NE     expression {
-        std::string tmp = exprResult(*$1, NE, *$3);
+  | expression GE expression {
+        std::string tmp = newTemp();
+        emit("greatereq %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
-  | expression '<'    expression {
-        std::string tmp = exprResult(*$1, '<', *$3);
+  | expression EQ expression {
+        std::string tmp = newTemp();
+        emit("equal %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
-  | expression '>'    expression {
-        std::string tmp = exprResult(*$1, '>', *$3);
+  | expression NE expression {
+        std::string tmp = newTemp();
+        emit("diff %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
-  | expression AND    expression {
-        std::string tmp = exprResult(*$1, AND, *$3);
+  | expression AND expression {
+        std::string tmp = newTemp();
+        emit("and %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
-  | expression OR     expression {
-        std::string tmp = exprResult(*$1, OR, *$3);
+  | expression OR expression {
+        std::string tmp = newTemp();
+        emit("or %s %s %s", tmp.c_str(), (*$1).c_str(), (*$3).c_str());
         $$ = new std::string(tmp);
     }
   | NOT expression {
-        std::string tmp = exprResult("", NOT, *$2);
+        std::string tmp = newTemp();
+        emit("not %s %s 0", tmp.c_str(), (*$2).c_str());
         $$ = new std::string(tmp);
     }
   ;
 
 %%
 
-int yyerror(const char *s) {
-    fprintf(stderr, "Erro sintático: %s\n", s);
+int yyerror(const char *s){
+    fprintf(stderr,"Erro sintatico: %s\n",s);
     return 0;
 }
