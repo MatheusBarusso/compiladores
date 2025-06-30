@@ -1,7 +1,0 @@
-    tni a;
-    tni b;
-    a = 5;
-    b = 10;
-    fi (a < b) {
-        tnirp(a);
-    }
