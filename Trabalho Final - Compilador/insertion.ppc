@@ -3,8 +3,10 @@ daer(n);
 
 tni a[100];
 tni i;
+tni tmp;
 rof (i = 0; i < n; i++) {
-  daer(a[i]);
+  daer(tmp);
+  a[i] = tmp;
 }
 
 tni j;

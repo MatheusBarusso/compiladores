@@ -69,13 +69,10 @@
 /* First part of user prologue.  */
 #line 1 "parser.y"
 
-
 #include <stdio.h>
 #include <string.h>
 extern FILE *yyout;
-
 #define emit(fmt, ...) fprintf(yyout, fmt, __VA_ARGS__)
-
 typedef struct {
     char *id;
     int end;
@@ -87,8 +84,6 @@ typedef struct {
     int t2;
     int t3;
 } expressao;
-
-// o vetor tabela serve para armazenar as informações casos as expressoes tenha AND ou OR nas comparações
 
 expressao tabela[1000];
 simbolo tabsimb[10000];
@@ -184,7 +179,7 @@ int pop(void)
 }
 
 
-#line 188 "parser.tab.c"
+#line 183 "parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -677,14 +672,14 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   139,   139,   140,   141,   142,   143,   144,   145,   146,
-     147,   151,   151,   152,   152,   154,   158,   158,   159,   159,
-     160,   161,   166,   167,   168,   169,   169,   170,   170,   174,
-     174,   178,   182,   183,   187,   187,   187,   187,   191,   191,
-     191,   195,   195,   196,   200,   200,   201,   202,   203,   207,
-     208,   209,   210,   211,   212,   216,   217,   221,   222,   226,
-     227,   228,   230,   231,   232,   233,   237,   238,   239,   240,
-     241,   242
+       0,   134,   134,   135,   136,   137,   138,   139,   140,   141,
+     142,   146,   146,   147,   147,   149,   153,   153,   154,   154,
+     155,   156,   161,   162,   163,   164,   164,   165,   165,   169,
+     169,   173,   177,   178,   182,   182,   182,   182,   186,   186,
+     186,   190,   190,   191,   195,   195,   196,   197,   198,   202,
+     203,   204,   205,   206,   207,   211,   212,   216,   217,   221,
+     222,   223,   225,   226,   227,   228,   232,   233,   234,   235,
+     236,   237
 };
 #endif
 
@@ -1617,325 +1612,325 @@ yyreduce:
   switch (yyn)
     {
   case 8: /* linhaDeCodigo: BREAK PEV  */
-#line 145 "parser.y"
+#line 140 "parser.y"
                           { printf("jump R0%d\n", pilha[topo - 1]); }
-#line 1623 "parser.tab.c"
+#line 1618 "parser.tab.c"
     break;
 
   case 11: /* $@1: %empty  */
-#line 151 "parser.y"
+#line 146 "parser.y"
                              {int end = getendereco((yyvsp[-1].str_val));printf("read %%r%d\n",end);}
-#line 1629 "parser.tab.c"
+#line 1624 "parser.tab.c"
     break;
 
   case 13: /* $@2: %empty  */
-#line 152 "parser.y"
+#line 147 "parser.y"
                                   {int end = getendereco((yyvsp[-2].str_val));printf("read %%t%d\nstore %%t%d, %%t%d(%d)\n", T, T,(yyvsp[0].int_val),end);T++;}
-#line 1635 "parser.tab.c"
+#line 1630 "parser.tab.c"
     break;
 
   case 16: /* $@3: %empty  */
-#line 158 "parser.y"
+#line 153 "parser.y"
               {printf("printv %%t%d \n",(yyvsp[0].int_val));}
-#line 1641 "parser.tab.c"
+#line 1636 "parser.tab.c"
     break;
 
   case 18: /* $@4: %empty  */
-#line 159 "parser.y"
+#line 154 "parser.y"
                 {printf("printf %s\n",(yyvsp[0].str_val));}
-#line 1647 "parser.tab.c"
+#line 1642 "parser.tab.c"
     break;
 
   case 20: /* printf: expr  */
-#line 160 "parser.y"
+#line 155 "parser.y"
               {printf("printv %%t%d \n",(yyvsp[0].int_val));}
-#line 1653 "parser.tab.c"
+#line 1648 "parser.tab.c"
     break;
 
   case 21: /* printf: STRING  */
-#line 161 "parser.y"
+#line 156 "parser.y"
                 {printf("printf %s\n",(yyvsp[0].str_val));}
-#line 1659 "parser.tab.c"
+#line 1654 "parser.tab.c"
     break;
 
   case 22: /* atrib: INT ID ATRIB expr PEV  */
-#line 166 "parser.y"
+#line 161 "parser.y"
                               {printf("mov %%r%d, %%t%d\n", getendereco((yyvsp[-3].str_val)), (yyvsp[-1].int_val));}
-#line 1665 "parser.tab.c"
+#line 1660 "parser.tab.c"
     break;
 
   case 23: /* atrib: INT ID PEV  */
-#line 167 "parser.y"
+#line 162 "parser.y"
                    {tabsimb[nsimbs] = (simbolo){(yyvsp[-1].str_val), endereco}; nsimbs++;endereco++;}
-#line 1671 "parser.tab.c"
+#line 1666 "parser.tab.c"
     break;
 
   case 24: /* atrib: ID ATRIB expr PEV  */
-#line 168 "parser.y"
+#line 163 "parser.y"
                           {printf("mov %%r%d, %%t%d\n", getendereco((yyvsp[-3].str_val)), (yyvsp[-1].int_val));}
-#line 1677 "parser.tab.c"
+#line 1672 "parser.tab.c"
     break;
 
   case 25: /* $@5: %empty  */
-#line 169 "parser.y"
+#line 164 "parser.y"
                         {tabsimb[nsimbs] = (simbolo){(yyvsp[-2].str_val), endereco}; nsimbs++;endereco = (yyvsp[0].int_val) ;}
-#line 1683 "parser.tab.c"
+#line 1678 "parser.tab.c"
     break;
 
   case 27: /* $@6: %empty  */
-#line 170 "parser.y"
+#line 165 "parser.y"
                                      {int x = getendereco((yyvsp[-5].str_val));printf("store %%t%d, %%t%d(%d)\n",T-1,(yyvsp[-3].int_val),x);}
-#line 1689 "parser.tab.c"
+#line 1684 "parser.tab.c"
     break;
 
   case 29: /* $@7: %empty  */
-#line 174 "parser.y"
+#line 169 "parser.y"
                          {contagem_jf = rotulo+1;printf("label R0%d\n",rotulo); push(rotulo++); push(rotulo++);}
-#line 1695 "parser.tab.c"
+#line 1690 "parser.tab.c"
     break;
 
   case 30: /* lacofor: FOR LPAR atrib $@7 for PEV dentrofor RPAR LCHAVE linhaDeCodigo RCHAVE  */
-#line 174 "parser.y"
+#line 169 "parser.y"
                                                                                                                                                                     {int end = getendereco((yyvsp[-6].str_val));printf("add %%r%d, %%r%d, 1\n",end,end); printf("jump R0%d\nlabel R0%d\n",pop(),pop());}
-#line 1701 "parser.tab.c"
+#line 1696 "parser.tab.c"
     break;
 
   case 31: /* for: ID operacao expr  */
-#line 178 "parser.y"
+#line 173 "parser.y"
                        {int end = getendereco((yyvsp[-2].str_val)); printf("%s %%t%d, %%r%d, %%t%d\njf %%t%d, R0%d\n",(yyvsp[-1].str_val),T,end,(yyvsp[0].int_val), T, contagem_jf);(yyval.str_val)=(yyvsp[-2].str_val);T++;}
-#line 1707 "parser.tab.c"
+#line 1702 "parser.tab.c"
     break;
 
   case 32: /* dentrofor: contagem ID  */
-#line 182 "parser.y"
+#line 177 "parser.y"
                         {(yyval.str_val) = (yyvsp[0].str_val);}
-#line 1713 "parser.tab.c"
+#line 1708 "parser.tab.c"
     break;
 
   case 33: /* dentrofor: ID contagem  */
-#line 183 "parser.y"
+#line 178 "parser.y"
                         {(yyval.str_val) = (yyvsp[-1].str_val);}
-#line 1719 "parser.tab.c"
+#line 1714 "parser.tab.c"
     break;
 
   case 34: /* $@8: %empty  */
-#line 187 "parser.y"
+#line 182 "parser.y"
                   {contagem_jf = rotulo+1;printf("label R0%d \n",rotulo); push(rotulo++); push(rotulo++);}
-#line 1725 "parser.tab.c"
+#line 1720 "parser.tab.c"
     break;
 
   case 35: /* $@9: %empty  */
-#line 187 "parser.y"
+#line 182 "parser.y"
                                                                                                                            {printf("jf %%t%d, R0%d\n",T,contagem_jf);T++;}
-#line 1731 "parser.tab.c"
+#line 1726 "parser.tab.c"
     break;
 
   case 36: /* $@10: %empty  */
-#line 187 "parser.y"
+#line 182 "parser.y"
                                                                                                                                                                                                     { }
-#line 1737 "parser.tab.c"
+#line 1732 "parser.tab.c"
     break;
 
   case 37: /* lacowhile: WHILE $@8 LPAR expressoes $@9 RPAR LCHAVE linhaDeCodigo $@10 RCHAVE  */
-#line 187 "parser.y"
+#line 182 "parser.y"
                                                                                                                                                                                                                {printf("jump R0%d\nlabel R0%d\n",pop(),pop());}
-#line 1743 "parser.tab.c"
+#line 1738 "parser.tab.c"
     break;
 
   case 38: /* $@11: %empty  */
-#line 191 "parser.y"
+#line 186 "parser.y"
          { contagem_jf=rotulo;push(rotulo++); push(rotulo++);}
-#line 1749 "parser.tab.c"
+#line 1744 "parser.tab.c"
     break;
 
   case 39: /* $@12: %empty  */
-#line 191 "parser.y"
+#line 186 "parser.y"
                                                                                {printf("jf %%t%d, R0%d\n",T, contagem_jf);T++;}
-#line 1755 "parser.tab.c"
+#line 1750 "parser.tab.c"
     break;
 
   case 41: /* $@13: %empty  */
-#line 195 "parser.y"
+#line 190 "parser.y"
             {finalDoElse[fina_else++]=pop();printf("jump R0%d\n",finalDoElse[fina_else-1]);printf("label R0%d\n",pop());}
-#line 1761 "parser.tab.c"
+#line 1756 "parser.tab.c"
     break;
 
   case 42: /* else: ELSE $@13 LCHAVE linhaDeCodigo RCHAVE  */
-#line 195 "parser.y"
+#line 190 "parser.y"
                                                                                                                                                       {printf("label R0%d\n",finalDoElse[--fina_else]); }
-#line 1767 "parser.tab.c"
+#line 1762 "parser.tab.c"
     break;
 
   case 43: /* else: %empty  */
-#line 196 "parser.y"
+#line 191 "parser.y"
        { int x = pop();printf("jump R0%d\n",x);printf("label R0%d\nlabel R0%d\n",pop(),x);}
-#line 1773 "parser.tab.c"
+#line 1768 "parser.tab.c"
     break;
 
   case 44: /* $@14: %empty  */
-#line 200 "parser.y"
+#line 195 "parser.y"
                                    {printf("%s %%t%d, %%t%d, %%t%d\n", (yyvsp[-2].str_val) ,T, (yyvsp[-3].int_val), (yyvsp[-1].int_val));tabela[topo_tabela].t2 = T;T++;tabela[topo_tabela].id = (yyvsp[0].str_val);vazio=0;}
-#line 1779 "parser.tab.c"
+#line 1774 "parser.tab.c"
     break;
 
   case 46: /* expressoes: expr operacao expr  */
-#line 201 "parser.y"
+#line 196 "parser.y"
                                 {printf("%s %%t%d, %%t%d, %%t%d\n", (yyvsp[-1].str_val) ,T, (yyvsp[-2].int_val), (yyvsp[0].int_val));push_expre(T);if(vazio!=-1){pop_tabela(T);T++;};vazio!=-1;}
-#line 1785 "parser.tab.c"
+#line 1780 "parser.tab.c"
     break;
 
   case 47: /* expressoes: LPAR expressoes RPAR jv expressoes  */
-#line 202 "parser.y"
+#line 197 "parser.y"
                                                 {printf("%s %%t%d, %%t%d, %%t%d \n",(yyvsp[-1].str_val),T,pop_expre(),pop_expre());(yyval.int_val) = (yyvsp[-3].int_val);}
-#line 1791 "parser.tab.c"
+#line 1786 "parser.tab.c"
     break;
 
   case 48: /* expressoes: LPAR expressoes RPAR  */
-#line 203 "parser.y"
+#line 198 "parser.y"
                                   {(yyval.int_val) = (yyvsp[-1].int_val);}
-#line 1797 "parser.tab.c"
+#line 1792 "parser.tab.c"
     break;
 
   case 49: /* operacao: MAIOR  */
-#line 207 "parser.y"
+#line 202 "parser.y"
                  {(yyval.str_val) = "greater";}
-#line 1803 "parser.tab.c"
+#line 1798 "parser.tab.c"
     break;
 
   case 50: /* operacao: MENOR  */
-#line 208 "parser.y"
+#line 203 "parser.y"
                  {(yyval.str_val) = "less";}
-#line 1809 "parser.tab.c"
+#line 1804 "parser.tab.c"
     break;
 
   case 51: /* operacao: IGUAL  */
-#line 209 "parser.y"
+#line 204 "parser.y"
                  {(yyval.str_val) = "equal";}
-#line 1815 "parser.tab.c"
+#line 1810 "parser.tab.c"
     break;
 
   case 52: /* operacao: DIFERENTE  */
-#line 210 "parser.y"
+#line 205 "parser.y"
                      {(yyval.str_val) = "diff";}
-#line 1821 "parser.tab.c"
+#line 1816 "parser.tab.c"
     break;
 
   case 53: /* operacao: MENORIGUAL  */
-#line 211 "parser.y"
+#line 206 "parser.y"
                       {(yyval.str_val) = "lesseq";}
-#line 1827 "parser.tab.c"
+#line 1822 "parser.tab.c"
     break;
 
   case 54: /* operacao: MAIORIGUAL  */
-#line 212 "parser.y"
+#line 207 "parser.y"
                       {(yyval.str_val) = "greatereq";}
-#line 1833 "parser.tab.c"
+#line 1828 "parser.tab.c"
     break;
 
   case 55: /* jv: AND  */
-#line 216 "parser.y"
+#line 211 "parser.y"
          {(yyval.str_val) = "and";}
-#line 1839 "parser.tab.c"
+#line 1834 "parser.tab.c"
     break;
 
   case 56: /* jv: OR  */
-#line 217 "parser.y"
+#line 212 "parser.y"
         {(yyval.str_val) = "or";}
-#line 1845 "parser.tab.c"
+#line 1840 "parser.tab.c"
     break;
 
   case 57: /* contagem: MAISMAIS  */
-#line 221 "parser.y"
+#line 216 "parser.y"
                     {(yyval.str_val) = "add";}
-#line 1851 "parser.tab.c"
+#line 1846 "parser.tab.c"
     break;
 
   case 58: /* contagem: MENOSMENOS  */
-#line 222 "parser.y"
+#line 217 "parser.y"
                       {(yyval.str_val) = "sub";}
-#line 1857 "parser.tab.c"
+#line 1852 "parser.tab.c"
     break;
 
   case 59: /* expr: expr MAIS expr2  */
-#line 226 "parser.y"
+#line 221 "parser.y"
                        {printf("add %%t%d, %%t%d, %%t%d\n", T, (yyvsp[-2].int_val), (yyvsp[0].int_val)); (yyval.int_val) = T++;}
-#line 1863 "parser.tab.c"
+#line 1858 "parser.tab.c"
     break;
 
   case 60: /* expr: expr MENOS expr2  */
-#line 227 "parser.y"
+#line 222 "parser.y"
                         {printf("sub %%t%d, %%t%d, %%t%d\n", T, (yyvsp[-2].int_val), (yyvsp[0].int_val)); (yyval.int_val) = T++;}
-#line 1869 "parser.tab.c"
+#line 1864 "parser.tab.c"
     break;
 
   case 61: /* expr: expr2  */
-#line 228 "parser.y"
+#line 223 "parser.y"
              {(yyval.int_val) = (yyvsp[0].int_val);}
-#line 1875 "parser.tab.c"
+#line 1870 "parser.tab.c"
     break;
 
   case 62: /* expr2: expr2 DIV termo  */
-#line 230 "parser.y"
+#line 225 "parser.y"
                         {printf("div %%t%d, %%t%d, %%t%d\n", T, (yyvsp[-2].int_val), (yyvsp[0].int_val)); (yyval.int_val) = T++;}
-#line 1881 "parser.tab.c"
+#line 1876 "parser.tab.c"
     break;
 
   case 63: /* expr2: expr2 MULT termo  */
-#line 231 "parser.y"
+#line 226 "parser.y"
                          {printf("mult %%t%d, %%t%d, %%t%d\n", T, (yyvsp[-2].int_val), (yyvsp[0].int_val)); (yyval.int_val) = T++;}
-#line 1887 "parser.tab.c"
+#line 1882 "parser.tab.c"
     break;
 
   case 64: /* expr2: expr2 MOD termo  */
-#line 232 "parser.y"
+#line 227 "parser.y"
                          {printf("mod %%t%d, %%t%d, %%t%d\n", T, (yyvsp[-2].int_val), (yyvsp[0].int_val)); (yyval.int_val) = T++;}
-#line 1893 "parser.tab.c"
+#line 1888 "parser.tab.c"
     break;
 
   case 65: /* expr2: termo  */
-#line 233 "parser.y"
+#line 228 "parser.y"
               {(yyval.int_val) = (yyvsp[0].int_val);}
-#line 1899 "parser.tab.c"
+#line 1894 "parser.tab.c"
     break;
 
   case 66: /* termo: ID  */
-#line 237 "parser.y"
+#line 232 "parser.y"
            { int end = getendereco((yyvsp[0].str_val)); printf("mov %%t%d, %%r%d\n", T, end); (yyval.int_val) = T++;}
-#line 1905 "parser.tab.c"
+#line 1900 "parser.tab.c"
     break;
 
   case 67: /* termo: NUM  */
-#line 238 "parser.y"
+#line 233 "parser.y"
              { printf("mov %%t%d, %d\n", T, (yyvsp[0].int_val)); (yyval.int_val) = T++; }
-#line 1911 "parser.tab.c"
+#line 1906 "parser.tab.c"
     break;
 
   case 68: /* termo: LPAR expr RPAR  */
-#line 239 "parser.y"
+#line 234 "parser.y"
                        { (yyval.int_val) = (yyvsp[-1].int_val); }
-#line 1917 "parser.tab.c"
+#line 1912 "parser.tab.c"
     break;
 
   case 69: /* termo: MENOS ID  */
-#line 240 "parser.y"
+#line 235 "parser.y"
                   { int end = getendereco((yyvsp[0].str_val)); printf("mov %%t%d, %%r%d\n", T, end); (yyval.int_val) = T++;}
-#line 1923 "parser.tab.c"
+#line 1918 "parser.tab.c"
     break;
 
   case 70: /* termo: MENOS NUM  */
-#line 241 "parser.y"
+#line 236 "parser.y"
                   { printf("mov %%t%d, %d\n", T, (yyvsp[0].int_val)); (yyval.int_val) = T++; }
-#line 1929 "parser.tab.c"
+#line 1924 "parser.tab.c"
     break;
 
   case 71: /* termo: ID LCOL expr RCOL  */
-#line 242 "parser.y"
+#line 237 "parser.y"
                           { int end = getendereco((yyvsp[-3].str_val));printf("load %%t%d, %%t%d(%d) \n",T,(yyvsp[-1].int_val),end); (yyval.int_val) = T++;}
-#line 1935 "parser.tab.c"
+#line 1930 "parser.tab.c"
     break;
 
 
-#line 1939 "parser.tab.c"
+#line 1934 "parser.tab.c"
 
       default: break;
     }
@@ -2159,7 +2154,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 244 "parser.y"
+#line 239 "parser.y"
 
 
 extern FILE *yyin;                   

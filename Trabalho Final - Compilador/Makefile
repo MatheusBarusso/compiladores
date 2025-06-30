@@ -1,19 +1,29 @@
 # Makefile
 
-# Alvo principal
+# Ferramentas
+BISON      := bison
+BISONFLAGS := --warnings=none
+FLEX       := flex
+CC         := gcc
+
+# Suprime *todos* os warnings do GCC
+CFLAGS     := -w
+
+# Link com flex
+LDFLAGS    := -lfl
+
+.PHONY: all clean
+
 all: analisador
 
-# Gera parser.tab.c e parser.tab.h a partir de parser.y
 parser.tab.c parser.tab.h: parser.y
-	bison -d parser.y
+	$(BISON) $(BISONFLAGS) -d $<
 
-# Gera lex.yy.c a partir de lexer.l, mas só depois que parser.tab.h existir
 lex.yy.c: lexer.l parser.tab.h
-	flex lexer.l
+	$(FLEX) $<
 
-# Compila tudo
-analisador: parser.tab.c lex.yy.c main.c
-	gcc -o analisador main.c parser.tab.c lex.yy.c -lfl
+analisador: main.c parser.tab.c lex.yy.c
+	$(CC) $(CFLAGS) -o $@ main.c parser.tab.c lex.yy.c $(LDFLAGS)
 
 clean:
 	rm -f analisador parser.tab.* lex.yy.c
