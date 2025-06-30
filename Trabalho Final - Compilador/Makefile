@@ -12,8 +12,8 @@ lex.yy.c: lexer.l parser.tab.h
 	flex lexer.l
 
 # Compila tudo
-analisador: parser.tab.c lex.yy.c main.cpp
-	g++ -o analisador main.cpp parser.tab.c lex.yy.c
+analisador: parser.tab.c lex.yy.c main.c
+	gcc -o analisador main.c parser.tab.c lex.yy.c -lfl
 
 clean:
 	rm -f analisador parser.tab.* lex.yy.c

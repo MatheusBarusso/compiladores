@@ -1,0 +1,598 @@
+Não terminais inúteis na gramática
+
+    if_else_header
+    program
+    external_decl
+    $@1
+    $@2
+    block
+    statement_list
+    for_init
+    for_update
+    print_arg
+    argument_list
+    statement
+    expression_list
+
+
+Terminais sem uso na gramática
+
+    ELSE
+    WHILE
+    FOR
+    INT
+    PRINT
+    READ
+    RETURN
+    MAIN
+    ASSIGN
+    STRING_TYPE
+    STRING_LITERAL
+    '{'
+    '}'
+    ','
+    ';'
+
+
+Regras inúteis na gramática
+
+   15 if_else_header: IF '(' expression ')'
+
+   16 program: external_decl
+   17        | program external_decl
+
+   18 $@1: ε
+
+   19 external_decl: MAIN '(' ')' $@1 block
+
+   20 $@2: ε
+
+   21 external_decl: IDENTIFIER '(' ')' $@2 block
+
+   22 block: '{' statement_list '}'
+
+   23 statement_list: ε
+   24               | statement_list statement
+
+   25 for_init: ε
+   26         | IDENTIFIER ASSIGN expression
+
+   27 for_update: ε
+   28           | IDENTIFIER ASSIGN expression
+
+   29 print_arg: expression
+   30          | STRING_LITERAL
+
+   31 argument_list: print_arg
+   32              | argument_list ',' print_arg
+
+   33 statement: INT IDENTIFIER ';'
+   34          | IDENTIFIER ASSIGN expression ';'
+   35          | if_header block
+   36          | if_else_header block ELSE block
+   37          | WHILE '(' expression ')' block
+   38          | READ '(' IDENTIFIER ')' ';'
+   39          | PRINT '(' argument_list ')' ';'
+   40          | RETURN expression ';'
+
+   41 expression_list: expression
+   42                | expression_list ',' expression
+
+
+Gramática
+
+    0 $accept: if_header $end
+
+    1 if_header: IF '(' expression ')'
+
+    2 expression: expression PLUS expression
+    3           | expression MINUS expression
+    4           | expression TIMES expression
+    5           | expression DIVIDE expression
+    6           | expression LE expression
+    7           | expression GE expression
+    8           | expression EQ expression
+    9           | expression NE expression
+   10           | expression '<' expression
+   11           | expression '>' expression
+   12           | '(' expression ')'
+   13           | IDENTIFIER
+   14           | NUMBER
+
+
+Terminais, com as regras onde eles aparecem
+
+    $end (0) 0
+    '(' (40) 1 12
+    ')' (41) 1 12
+    ',' (44)
+    ';' (59)
+    '<' (60) 10
+    '>' (62) 11
+    '{' (123)
+    '}' (125)
+    error (256)
+    IF (258) 1
+    ELSE (259)
+    WHILE (260)
+    FOR (261)
+    INT (262)
+    PRINT (263)
+    READ (264)
+    RETURN (265)
+    MAIN (266)
+    PLUS (267) 2
+    MINUS (268) 3
+    TIMES (269) 4
+    DIVIDE (270) 5
+    ASSIGN (271)
+    LE (272) 6
+    GE (273) 7
+    EQ (274) 8
+    NE (275) 9
+    NUMBER <reg_id> (276) 14
+    IDENTIFIER <id> (277) 13
+    STRING_TYPE (278)
+    STRING_LITERAL <string_val> (279)
+
+
+Não terminais com as regras onde eles aparecem
+
+    $accept (33)
+        à esquerda: 0
+    if_header <label> (34)
+        à esquerda: 1
+        à direita: 0
+    expression <reg_id> (35)
+        à esquerda: 2 3 4 5 6 7 8 9 10 11 12 13 14
+        à direita: 1 2 3 4 5 6 7 8 9 10 11 12
+
+
+Estado 0
+
+    0 $accept: • if_header $end
+
+    IF  deslocar, e ir ao estado 1
+
+    if_header  ir ao estado 2
+
+
+Estado 1
+
+    1 if_header: IF • '(' expression ')'
+
+    '('  deslocar, e ir ao estado 3
+
+
+Estado 2
+
+    0 $accept: if_header • $end
+
+    $end  deslocar, e ir ao estado 4
+
+
+Estado 3
+
+    1 if_header: IF '(' • expression ')'
+
+    NUMBER      deslocar, e ir ao estado 5
+    IDENTIFIER  deslocar, e ir ao estado 6
+    '('         deslocar, e ir ao estado 7
+
+    expression  ir ao estado 8
+
+
+Estado 4
+
+    0 $accept: if_header $end •
+
+    $padrão  aceitar
+
+
+Estado 5
+
+   14 expression: NUMBER •
+
+    $padrão  reduzir usando a regra 14 (expression)
+
+
+Estado 6
+
+   13 expression: IDENTIFIER •
+
+    $padrão  reduzir usando a regra 13 (expression)
+
+
+Estado 7
+
+   12 expression: '(' • expression ')'
+
+    NUMBER      deslocar, e ir ao estado 5
+    IDENTIFIER  deslocar, e ir ao estado 6
+    '('         deslocar, e ir ao estado 7
+
+    expression  ir ao estado 9
+
+
+Estado 8
+
+    1 if_header: IF '(' expression • ')'
+    2 expression: expression • PLUS expression
+    3           | expression • MINUS expression
+    4           | expression • TIMES expression
+    5           | expression • DIVIDE expression
+    6           | expression • LE expression
+    7           | expression • GE expression
+    8           | expression • EQ expression
+    9           | expression • NE expression
+   10           | expression • '<' expression
+   11           | expression • '>' expression
+
+    PLUS    deslocar, e ir ao estado 10
+    MINUS   deslocar, e ir ao estado 11
+    TIMES   deslocar, e ir ao estado 12
+    DIVIDE  deslocar, e ir ao estado 13
+    LE      deslocar, e ir ao estado 14
+    GE      deslocar, e ir ao estado 15
+    EQ      deslocar, e ir ao estado 16
+    NE      deslocar, e ir ao estado 17
+    '<'     deslocar, e ir ao estado 18
+    '>'     deslocar, e ir ao estado 19
+    ')'     deslocar, e ir ao estado 20
+
+
+Estado 9
+
+    2 expression: expression • PLUS expression
+    3           | expression • MINUS expression
+    4           | expression • TIMES expression
+    5           | expression • DIVIDE expression
+    6           | expression • LE expression
+    7           | expression • GE expression
+    8           | expression • EQ expression
+    9           | expression • NE expression
+   10           | expression • '<' expression
+   11           | expression • '>' expression
+   12           | '(' expression • ')'
+
+    PLUS    deslocar, e ir ao estado 10
+    MINUS   deslocar, e ir ao estado 11
+    TIMES   deslocar, e ir ao estado 12
+    DIVIDE  deslocar, e ir ao estado 13
+    LE      deslocar, e ir ao estado 14
+    GE      deslocar, e ir ao estado 15
+    EQ      deslocar, e ir ao estado 16
+    NE      deslocar, e ir ao estado 17
+    '<'     deslocar, e ir ao estado 18
+    '>'     deslocar, e ir ao estado 19
+    ')'     deslocar, e ir ao estado 21
+
+
+Estado 10
+
+    2 expression: expression PLUS • expression
+
+    NUMBER      deslocar, e ir ao estado 5
+    IDENTIFIER  deslocar, e ir ao estado 6
+    '('         deslocar, e ir ao estado 7
+
+    expression  ir ao estado 22
+
+
+Estado 11
+
+    3 expression: expression MINUS • expression
+
+    NUMBER      deslocar, e ir ao estado 5
+    IDENTIFIER  deslocar, e ir ao estado 6
+    '('         deslocar, e ir ao estado 7
+
+    expression  ir ao estado 23
+
+
+Estado 12
+
+    4 expression: expression TIMES • expression
+
+    NUMBER      deslocar, e ir ao estado 5
+    IDENTIFIER  deslocar, e ir ao estado 6
+    '('         deslocar, e ir ao estado 7
+
+    expression  ir ao estado 24
+
+
+Estado 13
+
+    5 expression: expression DIVIDE • expression
+
+    NUMBER      deslocar, e ir ao estado 5
+    IDENTIFIER  deslocar, e ir ao estado 6
+    '('         deslocar, e ir ao estado 7
+
+    expression  ir ao estado 25
+
+
+Estado 14
+
+    6 expression: expression LE • expression
+
+    NUMBER      deslocar, e ir ao estado 5
+    IDENTIFIER  deslocar, e ir ao estado 6
+    '('         deslocar, e ir ao estado 7
+
+    expression  ir ao estado 26
+
+
+Estado 15
+
+    7 expression: expression GE • expression
+
+    NUMBER      deslocar, e ir ao estado 5
+    IDENTIFIER  deslocar, e ir ao estado 6
+    '('         deslocar, e ir ao estado 7
+
+    expression  ir ao estado 27
+
+
+Estado 16
+
+    8 expression: expression EQ • expression
+
+    NUMBER      deslocar, e ir ao estado 5
+    IDENTIFIER  deslocar, e ir ao estado 6
+    '('         deslocar, e ir ao estado 7
+
+    expression  ir ao estado 28
+
+
+Estado 17
+
+    9 expression: expression NE • expression
+
+    NUMBER      deslocar, e ir ao estado 5
+    IDENTIFIER  deslocar, e ir ao estado 6
+    '('         deslocar, e ir ao estado 7
+
+    expression  ir ao estado 29
+
+
+Estado 18
+
+   10 expression: expression '<' • expression
+
+    NUMBER      deslocar, e ir ao estado 5
+    IDENTIFIER  deslocar, e ir ao estado 6
+    '('         deslocar, e ir ao estado 7
+
+    expression  ir ao estado 30
+
+
+Estado 19
+
+   11 expression: expression '>' • expression
+
+    NUMBER      deslocar, e ir ao estado 5
+    IDENTIFIER  deslocar, e ir ao estado 6
+    '('         deslocar, e ir ao estado 7
+
+    expression  ir ao estado 31
+
+
+Estado 20
+
+    1 if_header: IF '(' expression ')' •
+
+    $padrão  reduzir usando a regra 1 (if_header)
+
+
+Estado 21
+
+   12 expression: '(' expression ')' •
+
+    $padrão  reduzir usando a regra 12 (expression)
+
+
+Estado 22
+
+    2 expression: expression • PLUS expression
+    2           | expression PLUS expression •
+    3           | expression • MINUS expression
+    4           | expression • TIMES expression
+    5           | expression • DIVIDE expression
+    6           | expression • LE expression
+    7           | expression • GE expression
+    8           | expression • EQ expression
+    9           | expression • NE expression
+   10           | expression • '<' expression
+   11           | expression • '>' expression
+
+    TIMES   deslocar, e ir ao estado 12
+    DIVIDE  deslocar, e ir ao estado 13
+
+    $padrão  reduzir usando a regra 2 (expression)
+
+
+Estado 23
+
+    2 expression: expression • PLUS expression
+    3           | expression • MINUS expression
+    3           | expression MINUS expression •
+    4           | expression • TIMES expression
+    5           | expression • DIVIDE expression
+    6           | expression • LE expression
+    7           | expression • GE expression
+    8           | expression • EQ expression
+    9           | expression • NE expression
+   10           | expression • '<' expression
+   11           | expression • '>' expression
+
+    TIMES   deslocar, e ir ao estado 12
+    DIVIDE  deslocar, e ir ao estado 13
+
+    $padrão  reduzir usando a regra 3 (expression)
+
+
+Estado 24
+
+    2 expression: expression • PLUS expression
+    3           | expression • MINUS expression
+    4           | expression • TIMES expression
+    4           | expression TIMES expression •
+    5           | expression • DIVIDE expression
+    6           | expression • LE expression
+    7           | expression • GE expression
+    8           | expression • EQ expression
+    9           | expression • NE expression
+   10           | expression • '<' expression
+   11           | expression • '>' expression
+
+    $padrão  reduzir usando a regra 4 (expression)
+
+
+Estado 25
+
+    2 expression: expression • PLUS expression
+    3           | expression • MINUS expression
+    4           | expression • TIMES expression
+    5           | expression • DIVIDE expression
+    5           | expression DIVIDE expression •
+    6           | expression • LE expression
+    7           | expression • GE expression
+    8           | expression • EQ expression
+    9           | expression • NE expression
+   10           | expression • '<' expression
+   11           | expression • '>' expression
+
+    $padrão  reduzir usando a regra 5 (expression)
+
+
+Estado 26
+
+    2 expression: expression • PLUS expression
+    3           | expression • MINUS expression
+    4           | expression • TIMES expression
+    5           | expression • DIVIDE expression
+    6           | expression • LE expression
+    6           | expression LE expression •
+    7           | expression • GE expression
+    8           | expression • EQ expression
+    9           | expression • NE expression
+   10           | expression • '<' expression
+   11           | expression • '>' expression
+
+    PLUS    deslocar, e ir ao estado 10
+    MINUS   deslocar, e ir ao estado 11
+    TIMES   deslocar, e ir ao estado 12
+    DIVIDE  deslocar, e ir ao estado 13
+
+    $padrão  reduzir usando a regra 6 (expression)
+
+
+Estado 27
+
+    2 expression: expression • PLUS expression
+    3           | expression • MINUS expression
+    4           | expression • TIMES expression
+    5           | expression • DIVIDE expression
+    6           | expression • LE expression
+    7           | expression • GE expression
+    7           | expression GE expression •
+    8           | expression • EQ expression
+    9           | expression • NE expression
+   10           | expression • '<' expression
+   11           | expression • '>' expression
+
+    PLUS    deslocar, e ir ao estado 10
+    MINUS   deslocar, e ir ao estado 11
+    TIMES   deslocar, e ir ao estado 12
+    DIVIDE  deslocar, e ir ao estado 13
+
+    $padrão  reduzir usando a regra 7 (expression)
+
+
+Estado 28
+
+    2 expression: expression • PLUS expression
+    3           | expression • MINUS expression
+    4           | expression • TIMES expression
+    5           | expression • DIVIDE expression
+    6           | expression • LE expression
+    7           | expression • GE expression
+    8           | expression • EQ expression
+    8           | expression EQ expression •
+    9           | expression • NE expression
+   10           | expression • '<' expression
+   11           | expression • '>' expression
+
+    PLUS    deslocar, e ir ao estado 10
+    MINUS   deslocar, e ir ao estado 11
+    TIMES   deslocar, e ir ao estado 12
+    DIVIDE  deslocar, e ir ao estado 13
+
+    $padrão  reduzir usando a regra 8 (expression)
+
+
+Estado 29
+
+    2 expression: expression • PLUS expression
+    3           | expression • MINUS expression
+    4           | expression • TIMES expression
+    5           | expression • DIVIDE expression
+    6           | expression • LE expression
+    7           | expression • GE expression
+    8           | expression • EQ expression
+    9           | expression • NE expression
+    9           | expression NE expression •
+   10           | expression • '<' expression
+   11           | expression • '>' expression
+
+    PLUS    deslocar, e ir ao estado 10
+    MINUS   deslocar, e ir ao estado 11
+    TIMES   deslocar, e ir ao estado 12
+    DIVIDE  deslocar, e ir ao estado 13
+
+    $padrão  reduzir usando a regra 9 (expression)
+
+
+Estado 30
+
+    2 expression: expression • PLUS expression
+    3           | expression • MINUS expression
+    4           | expression • TIMES expression
+    5           | expression • DIVIDE expression
+    6           | expression • LE expression
+    7           | expression • GE expression
+    8           | expression • EQ expression
+    9           | expression • NE expression
+   10           | expression • '<' expression
+   10           | expression '<' expression •
+   11           | expression • '>' expression
+
+    PLUS    deslocar, e ir ao estado 10
+    MINUS   deslocar, e ir ao estado 11
+    TIMES   deslocar, e ir ao estado 12
+    DIVIDE  deslocar, e ir ao estado 13
+
+    $padrão  reduzir usando a regra 10 (expression)
+
+
+Estado 31
+
+    2 expression: expression • PLUS expression
+    3           | expression • MINUS expression
+    4           | expression • TIMES expression
+    5           | expression • DIVIDE expression
+    6           | expression • LE expression
+    7           | expression • GE expression
+    8           | expression • EQ expression
+    9           | expression • NE expression
+   10           | expression • '<' expression
+   11           | expression • '>' expression
+   11           | expression '>' expression •
+
+    PLUS    deslocar, e ir ao estado 10
+    MINUS   deslocar, e ir ao estado 11
+    TIMES   deslocar, e ir ao estado 12
+    DIVIDE  deslocar, e ir ao estado 13
+
+    $padrão  reduzir usando a regra 11 (expression)

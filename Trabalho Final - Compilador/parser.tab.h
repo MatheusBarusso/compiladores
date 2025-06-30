@@ -54,28 +54,46 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    IF = 258,                      /* IF  */
-    ELSE = 259,                    /* ELSE  */
-    WHILE = 260,                   /* WHILE  */
-    FOR = 261,                     /* FOR  */
-    INT = 262,                     /* INT  */
-    PRINT = 263,                   /* PRINT  */
-    READ = 264,                    /* READ  */
-    RETURN = 265,                  /* RETURN  */
-    MAIN = 266,                    /* MAIN  */
-    PLUS = 267,                    /* PLUS  */
-    MINUS = 268,                   /* MINUS  */
-    TIMES = 269,                   /* TIMES  */
-    DIVIDE = 270,                  /* DIVIDE  */
-    ASSIGN = 271,                  /* ASSIGN  */
-    LE = 272,                      /* LE  */
-    GE = 273,                      /* GE  */
-    EQ = 274,                      /* EQ  */
-    NE = 275,                      /* NE  */
-    NUMBER = 276,                  /* NUMBER  */
-    IDENTIFIER = 277,              /* IDENTIFIER  */
-    STRING_TYPE = 278,             /* STRING_TYPE  */
-    STRING_LITERAL = 279           /* STRING_LITERAL  */
+    ID = 258,                      /* ID  */
+    ATRIB = 259,                   /* ATRIB  */
+    PEV = 260,                     /* PEV  */
+    VETOR = 261,                   /* VETOR  */
+    FOR = 262,                     /* FOR  */
+    WHILE = 263,                   /* WHILE  */
+    IF = 264,                      /* IF  */
+    ELSE = 265,                    /* ELSE  */
+    INT = 266,                     /* INT  */
+    PRINTF = 267,                  /* PRINTF  */
+    STRING = 268,                  /* STRING  */
+    SCANF = 269,                   /* SCANF  */
+    COMENT = 270,                  /* COMENT  */
+    ERRO = 271,                    /* ERRO  */
+    COMENTARIO = 272,              /* COMENTARIO  */
+    NUM = 273,                     /* NUM  */
+    MAISMAIS = 274,                /* MAISMAIS  */
+    MENOR = 275,                   /* MENOR  */
+    IGUAL = 276,                   /* IGUAL  */
+    MAIOR = 277,                   /* MAIOR  */
+    DIFERENTE = 278,               /* DIFERENTE  */
+    MAIORIGUAL = 279,              /* MAIORIGUAL  */
+    MENORIGUAL = 280,              /* MENORIGUAL  */
+    MENOSMENOS = 281,              /* MENOSMENOS  */
+    LPAR = 282,                    /* LPAR  */
+    RPAR = 283,                    /* RPAR  */
+    LCHAVE = 284,                  /* LCHAVE  */
+    RCHAVE = 285,                  /* RCHAVE  */
+    LCOL = 286,                    /* LCOL  */
+    RCOL = 287,                    /* RCOL  */
+    MAIS = 288,                    /* MAIS  */
+    MENOS = 289,                   /* MENOS  */
+    MULT = 290,                    /* MULT  */
+    DIVINT = 291,                  /* DIVINT  */
+    MOD = 292,                     /* MOD  */
+    DIV = 293,                     /* DIV  */
+    APOST = 294,                   /* APOST  */
+    AND = 295,                     /* AND  */
+    OR = 296,                      /* OR  */
+    BREAK = 297                    /* BREAK  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -84,12 +102,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 10 "parser.y"
+#line 118 "parser.y"
 
-    int num;
-    char *id;
+    char *str_val;
+    int int_val;    
 
-#line 93 "parser.tab.h"
+#line 111 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

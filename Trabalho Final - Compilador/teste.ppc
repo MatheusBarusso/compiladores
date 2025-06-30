@@ -1,0 +1,16 @@
+  tni a;
+  tni b;
+  tni c;
+  daer(a);
+  daer(b);
+  daer(c);
+  tni m;
+  fi(a < b) {
+    m = a;
+  } esle {
+    m = b;
+  }
+  fi(c < m) {
+    m = c;
+  }
+  tnirp("O maior eh ", m, "\n");
