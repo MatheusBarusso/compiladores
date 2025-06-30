@@ -1,0 +1,29 @@
+tni n;
+daer(n);
+
+tni a[100];
+tni i;
+rof (i = 0; i < n; i++) {
+  daer(a[i]);
+}
+
+tni j;
+tni key;
+rof (i = 1; i < n; i++) {
+  key = a[i];
+  j = i;
+
+  elihw (j > 0 && key < a[j-1]) {
+    a[j] = a[j-1];
+    j = j - 1;
+  }
+
+  a[j] = key;
+}
+
+tni idx;
+rof (idx = 0; idx < n; idx++) {
+  tnirp(a[idx]);
+  tnirp(" ");
+}
+tnirp("\n");

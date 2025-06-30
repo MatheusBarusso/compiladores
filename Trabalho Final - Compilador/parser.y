@@ -1,11 +1,8 @@
 %{
-
 #include <stdio.h>
 #include <string.h>
 extern FILE *yyout;
-
 #define emit(fmt, ...) fprintf(yyout, fmt, __VA_ARGS__)
-
 typedef struct {
     char *id;
     int end;
@@ -17,8 +14,6 @@ typedef struct {
     int t2;
     int t3;
 } expressao;
-
-// o vetor tabela serve para armazenar as informações casos as expressoes tenha AND ou OR nas comparações
 
 expressao tabela[1000];
 simbolo tabsimb[10000];

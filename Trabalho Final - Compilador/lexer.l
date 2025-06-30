@@ -17,6 +17,8 @@
 "daer"          { return SCANF; }
 "kaerb"         { return BREAK; }
 
+"++"			{ return MAISMAIS; }
+"--"			{ return MENOSMENOS; }
 "+"             { return MAIS; }
 "-"             { return MENOS; }
 "*"             { return MULT; }
