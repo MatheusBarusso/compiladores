@@ -1,0 +1,7 @@
+Trabalho Final - Compilador/analisador
+Trabalho Final - Compilador/lex.yy.c
+Trabalho Final - Compilador/main.cpp
+Trabalho Final - Compilador/parser.tab.c
+Trabalho Final - Compilador/parser.tab.h
+Trabalho Final - Compilador/testesintatico.ppc
+Trabalho Final - Compilador/testesintatico_fix.ppc

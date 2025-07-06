@@ -1,8 +1,3 @@
-%code requires {
-#include <string>
-#include <vector>
-}
-
 %{
 #include <stdio.h>
 #include <string.h>
