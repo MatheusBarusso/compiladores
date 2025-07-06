@@ -98,6 +98,7 @@ int main(int argc, char *argv[]) {
             *dest = a;
             pc++;
         } else if (prog[pc][0] == "read") {
+            *dest = getval(prog[pc][1]);
             cin >> *dest;
             pc++;
         } else if (prog[pc][0] == "label") {
@@ -130,15 +131,11 @@ int main(int argc, char *argv[]) {
             else pc++;
         } else if (prog[pc][0] == "printf") {
             string s = prog[pc][1];
-            for (int i=0;s[i];i++)
-                if (s[i]=='\\' and s[i+1]=='n') {
-                    cout << endl;
-                    i++;
-                } else
-                    cout << s[i];
+            cout << s.substr(1, s.length() - 2);
             pc++;
         } else if (prog[pc][0] == "printv") {
-            cout << getval(prog[pc][1]);
+            int val_to_print = getval(prog[pc][1]);
+            cout << val_to_print;
             pc++;
         } else if (prog[pc][0] == "add") {
             *dest = a+b;

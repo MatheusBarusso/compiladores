@@ -1,0 +1,31 @@
+tni ult;
+ult = 1;
+
+tni penult;
+penult = 0;
+
+tnirp(" Exibir quantos termos: ");
+tni n;
+daer(n);
+
+fi (n <= 1) {
+    tnirp(penult);
+    tnirp("  ");
+} esle {}
+
+fi (n <= 2) {
+    tnirp(ult);
+    tnirp("  ");
+} esle {}
+
+tni i;
+rof(i = 3; i >= n; i++) {
+    tni prox;
+    prox = penult + ult;
+    tnirp(prox);
+    tnirp("  ");
+    penult = ult;
+    ult = prox;
+}
+
+tnirp("/n");
