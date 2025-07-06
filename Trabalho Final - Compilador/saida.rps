@@ -1,69 +1,27 @@
 read %r0
-mov %t0, 0
-mov %r100, %t0
+read %r1
+read %r2
+mov %t0, %r0
+mov %t1, %r1
+greater %t2, %t0, %t1
+jf %t2, R00
+mov %t3, %r0
+mov %r3, %t3
+jump R01
 label R00
-mov %t1, %r0
-greater %t2, %r100, %t1
-jf %t2, R01
-read %r101
-mov %t3, %r100
-mov %t4, %r101
-store %t4, %t3(1)
-add %r100, %r100, 1
-jump R00
+mov %t4, %r1
+mov %r3, %t4
 label R01
-mov %t5, 1
-mov %r100, %t5
+mov %t5, %r2
+mov %t6, %r3
+greater %t7, %t5, %t6
+jf %t7, R02
+mov %t8, %r2
+mov %r3, %t8
+jump R03
 label R02
-mov %t6, %r0
-greater %t7, %r100, %t6
-jf %t7, R03
-mov %t8, %r100
-load %t9, %t8(1) 
-mov %r103, %t9
-mov %t10, %r100
-mov %r102, %t10
-label R04 
-mov %t11, %r102
-mov %t12, 0
-less %t13, %t11, %t12
-mov %t14, %r103
-mov %t15, %r102
-mov %t16, 1
-sub %t17, %t15, %t16
-load %t18, %t17(1) 
-greater %t19, %t14, %t18
-and %t20, %t13, %t19 
-jf %t20, R05
-mov %t21, %r102
-mov %t22, %r102
-mov %t23, 1
-sub %t24, %t22, %t23
-load %t25, %t24(1) 
-store %t25, %t21(1)
-mov %t26, %r102
-mov %t27, 1
-sub %t28, %t26, %t27
-mov %r102, %t28
-jump R04
-label R05
-mov %t29, %r102
-mov %t30, %r103
-store %t30, %t29(1)
-add %r100, %r100, 1
-jump R02
 label R03
-mov %t31, 0
-mov %r104, %t31
-label R06
-mov %t32, %r0
-greater %t33, %r104, %t32
-jf %t33, R07
-mov %t34, %r104
-load %t35, %t34(1) 
-printv %t35 
-printf " "
-add %r104, %r104, 1
-jump R06
-label R07
+printf "O maior eh "
+mov %t9, %r3
+printv %t9 
 printf "\n"

@@ -56,24 +56,6 @@ se a > b entao {
 print("O maior eh ", maior, "\n");
 ```
 
-### Possível variação em outra linguagem inventada
-
-```plaintext
-DECLARA a AI
-DECLARA b AI
-DECLARA maior AI // declaração
-
-MEDAH a AI
-MEDAH b AI
-SERAQUE a EHMAIORQUE b ? SEFOR (
-  maior RECEBA a AI
-) SEINAO (
-  maior RECEBA b AI
-)
-
-MOSTRA "O maior eh" DEPOIS maior DEPOIS "\n" AI
-```
-
 ---
 
 ## Raposeitor
@@ -97,5 +79,20 @@ Seu compilador deverá gerar código em **assembly do Raposeitor**, uma máquina
   - Sintáticos
   - Semânticos
 - O código assembly **não precisa ser otimizado**, apenas correto e funcional com os interpretadores fornecidos.
+
+## Execução
+
+No terminal, na pasta dos arquivos rodar os seguintes comandos:
+
+```
+make clean && make
+```
+```
+./analisador "nome do arquivo".ppc > saida.rps
+```
+```
+./raposeitor saida.rps
+```
+
 
 ---
